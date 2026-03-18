@@ -15,6 +15,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)
     join_date = Column(DateTime, default=datetime.utcnow)
+    confirmed = Column(Boolean, default=False)
 
 
 class Product(Base):
@@ -40,6 +41,8 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     customer_id = Column(Integer, ForeignKey('users.id'))
+    product_id = Column(Integer, ForeignKey("products.id"))
+    product_name = Column(String(200), ForeignKey("products.name"))
     total_amount = Column(DECIMAL(12, 2), nullable=False)
     status = Column(String(30), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -53,5 +56,6 @@ class OrderItem(Base):
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey('orders.id'))
     product_id = Column(Integer, ForeignKey('products.id'))
+    product_name = Column(String(200))
     quantity = Column(Integer, nullable=False)
     price_at_time = Column(DECIMAL(12, 2), nullable=False)
